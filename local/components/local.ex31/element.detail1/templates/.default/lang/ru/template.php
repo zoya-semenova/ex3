@@ -1,0 +1,6 @@
+<?php
+$MESS['NOTIFICATION_DETAIL_BACK_TO_LIST'] = 'Назад к списку';
+$MESS['NOTIFICATION_DETAIL_MARK_IMPORTANT'] = 'Пометить как важное';
+$MESS['NOTIFICATION_DETAIL_IMPORTANT'] = 'Важное';
+$MESS['NOTIFICATION_DETAIL_FILES'] = 'Файлы';
+$MESS['NOTIFICATION_DETAIL_NOT_FOUND'] = 'Уведомление не найдено';
