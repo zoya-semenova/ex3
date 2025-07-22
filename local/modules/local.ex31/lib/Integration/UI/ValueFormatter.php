@@ -9,9 +9,17 @@ use CComponentEngine;
 
 final class ValueFormatter
 {
-    public function formatInfo(ElementInfo $employee): string
+    public function formatInfo(
+        Element $project,
+        string  $urlTemplate,
+                $cnt,
+        string  $projectIdPlaceholder = 'INVESTMENT_PROJECT_ID'): string
     {
-        return sprintf('<a href="%s">%s</a>', $employee->title, $employee->title);
+        return sprintf(
+            '<a href="%s">%s</a>',
+            CComponentEngine::makePathFromTemplate($urlTemplate, [$projectIdPlaceholder => $project->id]),
+            'Инфо: '.$cnt
+        );
     }
 
     public function formatProject(

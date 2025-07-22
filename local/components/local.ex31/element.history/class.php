@@ -3,7 +3,7 @@
 use Local\Ex31\Collection as ProjectCollection;
 use Local\Ex31\History\Filter;
 use Local\Ex31\History\ElementInfo as InfoItem;
-use Local\Ex31\History\Service as InfoService;
+use Local\Ex31\History\InfoService;
 use Local\Ex31\Integration\Intranet\Employee\Collection as EmployeeCollection;
 use Local\Ex31\Integration\Intranet\Employee\Service as EmployeeService;
 use Local\Ex31\Integration\UI\FieldNameProvider;
@@ -56,7 +56,7 @@ final class ElementHistoryComponent extends CBitrixComponent
         Loader::requireModule('local.ex31');
 
         $this->infoService = $infoService ?? new InfoService();
-        $this->projectService = $projectService ?? new ProjectService($this->InfoService);
+        $this->projectService = $projectService ?? new ProjectService();
         $this->employeeService = $employeeService ?? new EmployeeService(Context::getCurrent()->getCulture());
         $this->valueFormatter = $valueFormatter ?? new ValueFormatter();
         $this->pageNavigationFactory = $pageNavigationFactory ?? new PageNavigationFactory();
@@ -106,7 +106,7 @@ final class ElementHistoryComponent extends CBitrixComponent
         $count = $this->infoService->count($filter);
 
         $navigation = $this->pageNavigationFactory->create($navigationParameters['nPageSize'], $count);
-        $sort = $gridService->getSorting(['sort' => ['CHANGED_AT' => 'DESC', 'ID' => 'DESC']]);
+        $sort = $gridService->getSorting(['sort' => ['ID' => 'DESC']]);
 
         $fragment = $this->infoService->getFragment(
             $filter,

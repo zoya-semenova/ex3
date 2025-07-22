@@ -8,7 +8,7 @@ use Bitrix\Main\ORM\Query\Filter\ConditionTree;
 use Bitrix\Main\ORM\Query\Query;
 use Bitrix\Main\SystemException;
 use Exception;
-use Local\Ex31\ElementInfoTable;
+use Local\Ex31\History\ElementInfoTable;
 
 class InfoService
 {
@@ -31,7 +31,9 @@ class InfoService
      */
     protected function createQuery(): Query
     {
-        $query = ElementInfoTable::query();
+        $query =  (new Query(
+            ElementInfoTable::getEntity()
+        ));
         $query->setSelect([
             'ID',
             'ELEMENT_ID',
@@ -70,10 +72,10 @@ class InfoService
             $result = $this
                 ->createQuery()
                 ->where($filter->toCriteria())
-                ->setLimit($pageSize)
-                ->setOffset($offset)
-                ->setOrder($order)
-                ->exec();
+                //->setLimit($pageSize)
+               // ->setOffset($offset)
+                ->setOrder($order);
+                //->exec();
 
             $collection = new InfoCollection();
             foreach ($result->fetchCollection() as $entityObject) {
@@ -88,6 +90,7 @@ class InfoService
 
             return $collection;
         } catch (SystemException $e) {
+            echo "<pre>";print_r($e->getMessage());echo "</pre>";
             throw new ServiceException('Failed to find history entries', previous: $e);
         }
     }

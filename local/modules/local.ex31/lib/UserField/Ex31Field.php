@@ -3,8 +3,11 @@
 namespace Local\Ex31\UserField;
 
 use Bitrix\Main\Localization\Loc;
+use Bitrix\Main\ORM\Query\Query;
 use Bitrix\Main\UserField\Types\BaseType;
 use Bitrix\Currency\CurrencyManager;
+use Local\Ex31\Collection;
+use Local\Ex31\ElementTable;
 use RuntimeException;
 
 class Ex31Field extends BaseType
@@ -21,37 +24,56 @@ class Ex31Field extends BaseType
             'BASE_TYPE' => \CUserTypeManager::BASE_TYPE_INT,
         ];
     }
-/*
+
     public static function getDbColumnType(): string
     {
-        return 'char(3)';
+        return 'int(11)';
     }
-*/
+
     public static function prepareSettings(array $userField): array
     {
         return [
             'FORMAT' => $userField['SETTINGS']['FORMAT'] ?: 'Элемент [#ID#] - #TITLE#',
+            'LINK' => $userField['SETTINGS']['LINK'] ?: '/invest/info/#ID#/',
         ];
     }
 
     private static function loadCurrencies(): array
     {
-        if (CurrencyField::$currencyList) {
-            return CurrencyField::$currencyList;
+        if (Ex31Field::$currencyList) {
+            return Ex31Field::$currencyList;
         }
 
-        $names = CurrencyManager::getNameList();
-        $symbols = CurrencyManager::getSymbolList();
+        $result =  (new Query(
+            ElementTable::getEntity()
+        ))
+            ->setSelect([
+                'ID',
+                'TITLE',
+            ])
+        ;
+
+        // echo "<pre>";
+        //  print_r( $result->getQuery());
+
+        //  $r = $result->exec();
+        // print_r($r->get)
+        //  print_r($result->fetchAll());exit;
+        //$projects = new Collection();
+        $names = [];
+        foreach ($result->fetchAll() as $entityArr) {
+            $names[$entityArr['ID']] = $entityArr;
+        }
 
         $currencies = [];
         foreach ($names as $currency => $name) {
             $currencies[$currency] = [
-                'TITLE' => $name,
-                'SYMBOL' => $symbols[$currency] ?? $currency
+                'TITLE' => $name['TITLE'],
+                'ID' => $name['ID'],
             ];
         }
 
-        return CurrencyField::$currencyList = $currencies;
+        return Ex31Field::$currencyList = $currencies;
     }
 
     public static function formatCurrency(array $userField, array $currency): string
@@ -64,11 +86,21 @@ class Ex31Field extends BaseType
         return str_replace($placeholders, array_values($currency), $userField['SETTINGS']['FORMAT']);
     }
 
+    public static function formatLink(array $userField, array $currency): string
+    {
+        $placeholders = array_map(
+            static fn(string $placeholder): string => '#' . $placeholder . '#',
+            array_keys($currency)
+        );
+
+        return str_replace($placeholders, array_values($currency), $userField['SETTINGS']['LINK']);
+    }
+
     public static function getFormattedCurrenciesList(array $userField): array
     {
         $formattedCurrencies = [];
-        foreach (CurrencyField::loadCurrencies() as $currency => $data) {
-            $formattedCurrencies[$currency] = CurrencyField::formatCurrency($userField, $data);
+        foreach (Ex31Field::loadCurrencies() as $currency => $data) {
+            $formattedCurrencies[$currency] = Ex31Field::formatCurrency($userField, $data);
         }
 
         return $formattedCurrencies;
@@ -76,27 +108,30 @@ class Ex31Field extends BaseType
 
     public static function onBeforeSave(array $userField, string $value): string
     {
-        CurrencyField::validateCurrency($value);
+        Ex31Field::validateCurrency($value);
 
         return $value;
     }
 
     public static function getDefaultValue(array $userField, array $additionalParameters = [])
     {
-        return CurrencyManager::getBaseCurrency();
+        return 0;
     }
 
     public static function validateCurrency(string $currency): void
     {
-        if (!CurrencyManager::isCurrencyExist($currency)) {
+        $currencies = Ex31Field::loadCurrencies();
+
+        if (! $currencies[$currency]) {
             throw new RuntimeException('Unknown currency.');
         }
     }
 
     public static function getCurrencyByName(string $currency): array {
-        CurrencyField::validateCurrency($currency);
+        Ex31Field::validateCurrency($currency);
 
-        $currencies = CurrencyField::loadCurrencies();
+        $currencies = Ex31Field::loadCurrencies();
         return $currencies[$currency];
     }
+
 }

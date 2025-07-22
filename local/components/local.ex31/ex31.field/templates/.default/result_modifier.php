@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var CurrencyFieldComponent $component
+ * @var Ex31FieldComponent $component
  * @var array{value: array<string>|string} $arResult
  */
 

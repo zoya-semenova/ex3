@@ -92,13 +92,14 @@ final class ElementListComponent extends CBitrixComponent implements Controllera
         }
 
 
-
+/*
         $infoIds = $userIds = [];
-        foreach ($fragment as $item) {print_r( $item->info);
+        foreach ($fragment as $item) {//print_r( $item->info);
             $infoIds[] = $item->info;
         }
 print_r($infoIds);
         $employees = $this->infoService->getByIds(...array_unique($infoIds));
+*/
 
         $this->arResult = [
             'grid' => [
@@ -116,7 +117,7 @@ print_r($infoIds);
                 'ROWS' => $fragment->map(fn(Element $item): array => [
                     'id' => $item->id,
                     'actions' => $this->prepareRowActions($item),
-                    'data' => $this->prepareRowData($item, $visibleColumns, $employees)
+                    'data' => $this->prepareRowData($item, $visibleColumns)
                 ]),
                 'NAV_OBJECT' => $navigation,
                 'AJAX_MODE' => 'Y',
@@ -194,7 +195,8 @@ print_r($infoIds);
         ];
     }
 
-    private function prepareRowData(Element $project, array $visibleColumns, \Local\Ex31\History\InfoCollection $info): array
+    private function prepareRowData(Element $project, array $visibleColumns//, \Local\Ex31\History\InfoCollection $info
+    ): array
     {
         $row = [];//echo "<pre>";print_r($visibleColumns);echo "</pre>";exit;
         foreach ($visibleColumns as $column) {
@@ -204,7 +206,7 @@ print_r($infoIds);
                 'TEXT' => $project->text,
                 'ACTIVE' => $project->active,
                 'MODIFY_DATE' => $project->modifyDate,
-                'INFO' => $this->valueFormatter->formatInfo($info->get($project->id)),
+                'INFO' => $this->valueFormatter->formatInfo($project, $this->arParams['HISTORY_PAGE_URL'],$project->infoCnt),
             };
         }
 

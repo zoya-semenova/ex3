@@ -41,10 +41,13 @@ final class RuleInjector
                                 }
                             },
                             {
-                                condition: [new RegExp('/invest/history/[0-9]+/')],
+                                condition: [new RegExp('/invest/info/[0-9]+/')],
                                 options: {
                                     width: 900,
-                                    cacheable: false
+                                    cacheable: false,
+                                    label: {
+                                        text: 'Инфо'
+                                    }
                                 }
                             }
                         ]

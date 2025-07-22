@@ -18,6 +18,7 @@ use Bitrix\Main\ORM\Fields\Validators\LengthValidator;
 use Bitrix\Main\Type\DateTime;
 use Bitrix\Main\UserTable;
 use Local\Ex31\History\ElementInfo;
+use Local\Ex31\History\ElementInfoTable;
 
 final class ElementTable extends DataManager
 {
@@ -44,6 +45,7 @@ final class ElementTable extends DataManager
                 ->configureDefaultValue('Y'),
             (new DatetimeField('UPDATED_AT')),
             (new TextField('TEXT')),
+
             (new OneToMany('INFO', ElementInfoTable::class, 'ELEMENT')
                 )->configureJoinType('left')
         ];

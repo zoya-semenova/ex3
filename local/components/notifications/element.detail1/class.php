@@ -126,7 +126,7 @@ class ElementDetail extends CBitrixComponent
 			'IS_IMPORTANT' => $notification->get('IS_IMPORTANT'),
 		];
 
-		$queryResult = \Local\Ex31\ElementInfoTable::getList([
+		$queryResult = \Local\Ex31\History\ElementInfoTable::getList([
 			'filter' => ['NOTIFICATION_ID' => $result['ID']],
 			'select' => ['FILE_ID'],
 		]);

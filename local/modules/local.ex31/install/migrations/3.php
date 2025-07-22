@@ -3,8 +3,8 @@
 \Bitrix\Main\Loader::includeModule('local.ex31');
 $dbCon = \Bitrix\Main\Application::getConnection();
 
-$entity = \Local\Ex31\ElementInfoTable::getEntity();
-$tableName = \Local\Ex31\ElementInfoTable::getTableName();
+$entity = \Local\Ex31\History\ElementInfoTable::getEntity();
+$tableName = \Local\Ex31\History\ElementInfoTable::getTableName();
 if(!$dbCon->isTableExists($tableName))
 {
     $entity->createDbTable();

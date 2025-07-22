@@ -13,5 +13,7 @@ $value = (array)$arResult['value'] ?? [];
 
 $arResult['formattedValue'] = [];
 foreach ($value as $currencyId) {
-    $arResult['formattedValue'][$currencyId] = $component->formatCurrency($currencyId);
+    $arResult['formattedValue'][$currencyId] = $component->formatLink($currencyId) ?
+        '<a href='.$component->formatLink($currencyId).'>'.$component->formatCurrency($currencyId).'</a>':
+        $component->formatCurrency($currencyId);
 }

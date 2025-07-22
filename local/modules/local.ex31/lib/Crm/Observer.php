@@ -1,6 +1,6 @@
 <?php
 
-namespace B24\Academy\Crm\Deal;
+namespace Local\Ex31\Crm;
 
 use Bitrix\Crm\PhaseSemantics;
 use Bitrix\Crm\Service\Container;
@@ -14,13 +14,16 @@ class Observer
     public static function handleOnBeforeCrmDealUpdate(array &$field): bool {
         Loader::requireModule('crm');
 
-        if (!isset($field['STAGE_ID'])) {
-            return true;
-        }
-
         $dealFactory = Container::getInstance()->getFactory(\CCrmOwnerType::Deal);
         $deal = $dealFactory->getItem($field['ID']);
+//echo "<pre>";print_r($deal->getData());echo "</pre>";exit;
 
+if (isset($field['UF_CRM_1752474606351']) && ($field['UF_CRM_1752474606351'] != $deal->getData()['UF_CRM_1752474606351'])) {
+    $field['RESULT_MESSAGE'] = 'test deal';
+
+    return false;
+}
+/*
         if ($deal->getStageId() == $field['STAGE_ID'] || PhaseSemantics::isLost($deal->getStageSemanticId())) {
             return true;
         }
@@ -37,27 +40,8 @@ class Observer
             self::sendNotify();
             return false;
         }
-
+*/
         return true;
     }
 
-    public static function getLastComment(int $dealId): array {
-        $result = TimelineTable::getList([
-            'filter' => [
-                '=BINDINGS.ENTITY_ID' => $dealId,
-                '=BINDINGS.ENTITY_TYPE_ID' => \CCrmOwnerType::Deal,
-                'TYPE_ID' => TimelineType::COMMENT,
-            ],
-        ]);
-        return $result->fetch() ?: array();
-    }
-
-    private static function sendNotify(): void {
-        global $USER;
-
-        \CIMNotify::Add([
-            'TO_USER_ID' => $USER->GetID(),
-            'MESSAGE'    => Loc::getMessage('ERROR_MESSAGE'),
-        ]);
-    }
 }

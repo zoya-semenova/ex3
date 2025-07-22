@@ -2,7 +2,14 @@
 
 namespace Local\Ex31;
 
+use Bitrix\Im\Model\RelationTable;
+use Bitrix\Main\Entity\ReferenceField;
+use Bitrix\Main\ORM\Entity;
+use Bitrix\Main\ORM\Fields\ExpressionField;
+use Bitrix\Main\ORM\Fields\Relations\OneToMany;
+use Bitrix\Main\ORM\Fields\Relations\Reference;
 use Bitrix\Main\ORM\Query\Query;
+use Local\Ex31\History\ElementInfo;
 use Local\Ex31\History\Entry as HistoryItem;
 use Local\Ex31\History\Service as HistoryService;
 use Local\Ex31\History\ServiceException as HistoryServiceException;
@@ -84,23 +91,112 @@ class Service
                     'MODIFY_DATE',
                     'ACTIVE',
                     'TEXT',
-                    'INFO' => 'INFO',
+                   // 'INFO_ID' => 'INFO.ID',
+                    'cnt'
+                   // 'BOOKS.ID',
+                   // 'BOOKS.COUNT',
+                  //  'BOOKS.ID',
+                  //  'BOOKS1'
                 ])
-                //->where($criteria)
-                ->setOrder($order)
-                ->setLimit($limit)
-                ->setOffset($offset);
-                //->exec();
-//            echo "<pre>";
-          //  print_r( $result->getQuery());
-           // print_r($result->fetchAll());exit;
-            $projects = new Collection();
-            foreach ($result->fetchCollection() as $entityObject) {
-                // echo "<pre>"; print_r($entityObject->getInfo()->getAll());exit;
-                foreach ($entityObject->getInfo() as $info) {
-                    echo "<pre>"; print_r($info->getTitle());exit;
-                }
+                /*
+                ->registerRuntimeField('BOOKS1',
+                    new ExpressionField('COUNT', '"nnn"'))
+                */
+                //->setGroup(['INFO.ID'])
+                /*
+                ->registerRuntimeField(
+                    'elements', 'INFO'
+                )
+                */
+                    /*
+                ->registerRuntimeField(
+                    'USER_TOPIC',
+                    new Reference(
+                        'USER_TOPIC',
+                    )
+                )
+                    */
+                    /*
+                ->registerRuntimeField(
+                    'RELATION',
+                    $this->
+                )
+                    */
+/*
+                ->registerRuntimeField(
+                    'BOOKS' ,
 
+                     (new Query(
+                        ElementInfoTable::getEntity()
+                    ))
+                        ->setSelect(['ID', 'ELEMENT_ID', 'COUNT'])
+                        ->setGroup(['ELEMENT_ID'])
+                        ->registerRuntimeField('',
+                            new ExpressionField('COUNT', 'COUNT(*)'))
+                )
+*/
+/*
+                  ->registerRuntimeField(
+                    'BOOKS' ,
+
+                    new ReferenceField('BOOKS2', Entity::getInstanceByQuery( (new Query(
+                        ElementInfoTable::getEntity()
+                    ))
+                        ->setSelect(['ID', 'ELEMENT_ID', 'COUNT'])
+                        ->setGroup(['ELEMENT_ID'])
+                        				->registerRuntimeField('',
+                                            new ExpressionField('COUNT', 'COUNT(*)'))
+                    ),
+                        ['=this.ID' => 'ref.ELEMENT_ID'],
+                        array('join_type' => 'LEFT')
+                    ),
+
+                    [
+               // 'data_type' => ElementInfoTable::query()
+               //     ->setSelect(['ELEMENT_ID', 'BOOK_COUNT' => 'COUNT(*)'])
+                //    ->setGroup(['ELEMENT_ID']),
+                  //      'data_type' =>      ,
+               // 'reference' =>
+            ]
+                )
+*/
+
+                ->registerRuntimeField("cnt", array(
+                        "data_type" => "integer",
+                        "expression" => array("count(%s)", "INFO.ID")
+                    )
+                )
+
+                //->where($criteria)
+              //  ->setOrder($order);
+                //->setLimit($limit)
+               // ->setOffset($offset);
+                //->exec();
+            ;
+
+         // echo "<pre>";
+          //  print_r( $result->getQuery());
+
+          //  $r = $result->exec();
+           // print_r($r->get)
+          //  print_r($result->fetchAll());exit;
+            $projects = new Collection();
+            foreach ($result->fetchAll() as $entityArr) {
+                // echo "<pre>"; print_r($entityObject->getInfo()->getAll());exit;
+               // foreach ($entityObject->getInfo() as $info) {
+                   // echo "<pre>"; print_r($info->getTitle());
+              //  }
+             //   echo "<pre>"; print_r($entityArr);
+                //$entityObject = new ElementTable();
+                $entityObject = ElementTable::createObject();
+                $entityObject->set('ID', $entityArr['ID']);
+                $entityObject->set('TITLE', $entityArr['TITLE']);
+                $entityObject->set('MODIFY_DATE', $entityArr['MODIFY_DATE']);
+                $entityObject->set('ACTIVE', $entityArr['ACTIVE']);
+                $entityObject->set('TEXT', $entityArr['TEXT']);
+               // $entityObject->fill($entityArr);
+               // print_r($entityObject);
+               // exit;
                 $projects->insert(
                     new Element(
                         $entityObject->getId(),
@@ -108,13 +204,14 @@ class Service
                         $entityObject->getModifyDate(),
                         $entityObject->getActive(),
                         $entityObject->getText(),
-
+$entityArr['cnt']
                     )
                 );
             }
 
             return $projects;
         } catch (SystemException $e) {
+            print_r($e->getMessage());
             throw new ServiceException('Failed to find project', previous: $e);
         }
     }

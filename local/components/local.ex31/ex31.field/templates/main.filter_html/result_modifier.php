@@ -17,7 +17,7 @@ foreach ($component->getAvailableCurrencies() as $currency => $formattedValue) {
             'text' => $formattedValue,
             'type' => 'html'
         ],
-        'entityId' => 'currency',
+        'entityId' => 'ex31',
         'tabs' => ['main']
     ];
     if (in_array($currency, $arResult['value'])) {

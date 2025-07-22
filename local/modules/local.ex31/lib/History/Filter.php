@@ -11,7 +11,7 @@ final class Filter
     public function __construct(
         public readonly ?int $elementId,
         public readonly ?string $title,
-        public readonly ?array $ids
+        //public readonly ?array $ids
     ) {
     }
 

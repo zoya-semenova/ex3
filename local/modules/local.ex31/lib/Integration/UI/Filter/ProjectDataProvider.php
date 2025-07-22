@@ -67,6 +67,14 @@ final class ProjectDataProvider extends DataProvider
                     'default' => true,
                 ]
             ),
+            'INFO' => $this->createField(
+                'INFO',
+                [
+                    'name' => $this->settings->getFieldName('INFO'),
+                    'type' => FieldAdapter::STRING,
+                    'default' => true,
+                ]
+            ),
 
         ];
     }

@@ -1,6 +1,6 @@
 <?php
 
-use B24\Academy\UserField\CurrencyField;
+use Local\Ex31\UserField\Ex31Field;
 
 defined('B_PROLOG_INCLUDED') || die;
 
@@ -9,4 +9,4 @@ defined('B_PROLOG_INCLUDED') || die;
  * @var array{VALUE: array|string} $arResult
  */
 
-print CurrencyField::getFilterHtml($arParams['arUserField'], ['VALUE' => (array) $arResult['VALUE']]);
+print Ex31Field::getFilterHtml($arParams['arUserField'], ['VALUE' => (array) $arResult['VALUE']]);

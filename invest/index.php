@@ -15,7 +15,7 @@ $APPLICATION->IncludeComponent(
         'URL_TEMPLATES' => [
             'list' => 'list/',
             'detail' => 'detail/#INVESTMENT_PROJECT_ID#/',
-            'history' => 'history/#INVESTMENT_PROJECT_ID#/',
+            'history' => 'info/#INVESTMENT_PROJECT_ID#/',
         ],
         'DEFAULT_PAGE' => 'list'
     ]

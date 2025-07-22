@@ -20,7 +20,7 @@ final class Element
         public ?DateTime $modifyDate,
         public ?string $active,
         public string $text,
-        public ?InfoCollection $info
+        public ?int $infoCnt
     ) {
 
     }
@@ -33,7 +33,7 @@ final class Element
             $this->modifyDate,
             $this->active,
             $this->text,
-            $this->info
+            $this->infoCnt
         );
     }
 }
