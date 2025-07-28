@@ -1,5 +1,5 @@
 <?php
-namespace Exam31\Ticket;
+namespace Exam31\Ticket1;
 
 use Bitrix\Main\Entity;
 use Bitrix\Main\Type\DateTime;

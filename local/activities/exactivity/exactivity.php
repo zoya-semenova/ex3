@@ -36,7 +36,7 @@ class CBPExActivity extends BaseActivity
         $this->setPropertiesTypes([
             'Fields' => [
                 'Name' => 'Fields',
-                'Type' => FieldType::STRING,
+                'Type' => FieldType::SELECT,
                 'Multiple' => true
             ],
             'ElId' => [
@@ -78,6 +78,13 @@ class CBPExActivity extends BaseActivity
                 "TYPE" => "string",
             ]
         ];
+
+        $this->preparedProperties['Fields'] = [
+            'field11' => [
+                "Name" => "Список задач",
+                "Type" => "string",
+            ]
+        ];
     }
 
     protected static function getFileName(): string
@@ -99,7 +106,7 @@ class CBPExActivity extends BaseActivity
     }
     public function execute(): int
     {
-        /*
+
         \Bitrix\Main\Loader::requireModule('local.ex31');
 
         if ($this->ElId) {
@@ -136,8 +143,10 @@ class CBPExActivity extends BaseActivity
             foreach ($r->fetchAll() as $entityArr) {
                 $this->WriteToTrackingService(json_encode($entityArr));
             }
+
+            $this->arProperties['field4'] = $entityArr['TITLE'];
         }
-*/
+
         $this->Fields['field1'] = '22';
         $this->arProperties['field1'] = '33';
         $this->arProperties['field3'] = '44';
@@ -176,7 +185,7 @@ class CBPExActivity extends BaseActivity
 
             }
        // }
-/*
+
         $arCurrentValues['Fields'] = [
             'field1' => array(
                 'Note' => 'field1',
@@ -191,7 +200,9 @@ class CBPExActivity extends BaseActivity
                 'Type' => 'string',
             )
         ];
-*/
+
+        $currentValues['Fields'] = $arCurrentActivity['Properties']['Fields'];
+
         $runtime = CBPRuntime::GetRuntime();
         return $runtime->ExecuteResourceFile(
             __FILE__,
@@ -214,7 +225,7 @@ class CBPExActivity extends BaseActivity
                 'Required' => false
             ],
             'Fields' => [
-                'Type' => FieldType::STRING,
+                'Type' => FieldType::SELECT,
                 'Name' => 'Fields',
                 'FieldName' => 'Fields',
                 'Multiple' => true,
@@ -255,6 +266,12 @@ class CBPExActivity extends BaseActivity
             'Required' =>  'Y',
             'Type' => 'string',
         );
+
+        $arFields['field4'] = [
+        'Type' => FieldType::STRING,
+        'Name' => 'Поле 4',
+        'Required' => false
+    ];
       //  }
 
 

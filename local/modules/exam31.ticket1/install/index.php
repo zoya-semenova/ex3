@@ -10,13 +10,13 @@ use Bitrix\Main\EventManager;
 use Bitrix\Main\UrlRewriter;
 use Bitrix\Main\SystemException;
 
-use Exam31\Ticket\SomeElementTable;
+use Exam31\Ticket1\SomeElementTable;
 
 Loc::loadMessages(__FILE__);
 
-class exam31_ticket extends CModule
+class exam31_ticket1 extends CModule
 {
-	var $MODULE_ID = 'exam31.ticket';
+	var $MODULE_ID = 'exam31.ticket1';
 
 	protected string $fileRoot;
 	protected array $filesPath;
@@ -31,12 +31,12 @@ class exam31_ticket extends CModule
 
 	public function __construct()
 	{
-		$arModuleVersion = array();
-		include(dirname(__FILE__) . '/version.php');
+		$arModuleVersion = include __DIR__ . '/version.php';
+
 		$this->MODULE_ID = self::getModuleId();
 		$this->MODULE_VERSION = $arModuleVersion['VERSION'];
 		$this->MODULE_VERSION_DATE = $arModuleVersion['VERSION_DATE'];
-		$this->MODULE_NAME = Loc::getMessage('EXAM31_TICKET_MODULE_NAME');
+		$this->MODULE_NAME = Loc::getMessage('EXAM31_TICKET_MODULE_NAME1');
 		$this->MODULE_DESCRIPTION = Loc::getMessage('EXAM31_TICKET_MODULE_DESC');
 		$this->PARTNER_NAME = Loc::getMessage('EXAM31_TICKET_NAME');
 		$this->PARTNER_URI = Loc::getMessage('EXAM31_TICKET_URI');
@@ -65,9 +65,8 @@ class exam31_ticket extends CModule
 		return true;
 	}
 
-	public function DoInstall()
+	public function DoInstall(): bool
 	{
-
 		try
 		{
 			if ($this->checkdir())
@@ -178,24 +177,28 @@ class exam31_ticket extends CModule
 
 	public function InstallFiles(): void
 	{
+
+        mkdir($this->fileRoot . '/local/activities/examticketactivity', 0755, true);
 		copyDirFiles(
 			$this->fileRoot . '/local/modules/' . $this->MODULE_ID . '/install/activities/examticketactivity',
 			$this->fileRoot . '/local/activities/examticketactivity',
 			true,
 			true
 		);
+        mkdir($this->fileRoot . '/local/components/' . $this->MODULE_ID, 0755, true);
 		copyDirFiles(
 			$this->fileRoot . '/local/modules/' . $this->MODULE_ID . '/install/components',
 			$this->fileRoot . '/local/components/' . $this->MODULE_ID,
 			true,
 			true
 		);
-		copyDirFiles(
+        mkdir($this->fileRoot . '/exam31', 0755, true);
+		 copyDirFiles(
 			$this->fileRoot . '/local/modules/' . $this->MODULE_ID . '/install/public/exam31',
 			$this->fileRoot . '/exam31',
 			true,
 			true
-		);
+		);//exit;
 	}
 
 	public function UnInstallFiles(): void
