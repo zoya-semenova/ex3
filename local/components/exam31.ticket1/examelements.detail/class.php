@@ -176,22 +176,39 @@ class ExamElementsDetailComponent extends CBitrixComponent implements Controller
 			'TEXT' => 'TEXT 2',
 			'ACTIVE' => 'Y'
 		];
-        $element = SomeElementTable::getById($this->elementId)->fetch();
+        $element = SomeElementTable::getById($this->elementId)->fetchObject();
 
-		return $element;
+		return [
+            'ID' => $element->get('ID'),
+            'DATE_MODIFY' => ($element->get('DATE_MODIFY'))->toString(),
+            'TITLE' => $element->get('TITLE'),
+            'TEXT' => $element->get('TEXT'),
+            'ACTIVE' => $element->get('ACTIVE') ? 'Y' : 'N'
+        ];
 	}
 
 	//Ajax
 	public function saveAction(array $data): AjaxJson
 	{
 		//Заглушка для отработки ajax
-		$element = [];
-		$isUdpateSuccess = true;
 		try
 		{
-			if ($isUdpateSuccess)
+            if (!empty($this->arParams['ELEMENT_ID'])) {
+                $item = SomeElementTable::getById((int)$this->arParams['ELEMENT_ID'])->fetchObject();
+
+
+            } else {
+                $item = SomeElementTable::createObject();
+            }
+            $item->set('TITLE', $data['TITLE'] ?? $item->get('TITLE'));
+            $item->set('TEXT', $data['TEXT'] ?? $item->get('TEXT'));
+            $item->set('ACTIVE', ($data['ACTIVE'] ? (($data['ACTIVE'] == 'Y') ? 1 : 0) : $item->get('ACTIVE')));
+            $item->set('DATE_MODIFY', new DateTime());
+
+            $updateResult = $item->save();
+			if ($updateResult)
 			{
-				$element['ID'] = '1';
+				$element['ID'] = $item->getId();
 			}
 			else
 			{
@@ -201,7 +218,7 @@ class ExamElementsDetailComponent extends CBitrixComponent implements Controller
 			return AjaxJson::createSuccess([
 				'ENTITY_ID' => $element['ID'],
 				//REDIRECT_URL необходим для корректной работы формы в слайдере
-				//'REDIRECT_URL' => $this->getDetailPageUrl($element['ID']),
+				'REDIRECT_URL' => $this->getDetailPageUrl($element['ID']),
 			]);
 		}
 		catch (SystemException $exception)

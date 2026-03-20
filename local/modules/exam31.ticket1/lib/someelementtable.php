@@ -2,6 +2,7 @@
 namespace Exam31\Ticket1;
 
 use Bitrix\Main\Entity;
+use Bitrix\Main\ORM\Fields\Relations\OneToMany;
 use Bitrix\Main\Type\DateTime;
 use Bitrix\Main\Localization\Loc;
 
@@ -25,6 +26,11 @@ class SomeElementTable extends Entity\DataManager
 			(new Entity\StringField('TITLE'))
 				->configureRequired(),
 			new Entity\TextField('TEXT'),
+
+            (new OneToMany('INFO', SomeElementInfoTable::class, 'ELEMENT')
+            )->configureJoinType('left')
+
+
 		);
 	}
 

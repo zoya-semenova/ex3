@@ -1,7 +1,7 @@
 <?php
 defined('B_PROLOG_INCLUDED') || die;
 
-use Exam31\Ticket\ExamFieldType;
+use Exam31\Ticket1\ExamFieldType;
 use Bitrix\Main\Component\BaseUfComponent;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Text\HtmlFilter;
@@ -11,7 +11,7 @@ class SomeElementFieldComponent extends BaseUfComponent
 
 	public function __construct($component = null)
 	{
-		Loader::requireModule('exam31.ticket');
+		Loader::requireModule('exam31.ticket1');
 		parent::__construct($component);
 	}
 
@@ -27,12 +27,18 @@ class SomeElementFieldComponent extends BaseUfComponent
 		];
 
 		$formatValueTemplate = HtmlFilter::encode((string) $this->arResult['userField']['SETTINGS']['FORMAT'] ?? '#ID#');
+        $linkValueTemplate = HtmlFilter::encode((string) $this->arResult['userField']['SETTINGS']['LINK'] ?? '#ID#');
 
 		$preparedValue['FORMATTED_VALUE'] = str_replace(
 			'#ID#',
 			$preparedValue['VALUE'],
 			$formatValueTemplate
 		);
+        $preparedValue['LINK_VALUE'] = str_replace(
+            '#ID#',
+            $preparedValue['VALUE'],
+            $linkValueTemplate
+        );
 
 		return $preparedValue;
 

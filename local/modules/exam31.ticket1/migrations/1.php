@@ -19,13 +19,33 @@ set_time_limit(0);
 
 
 \Bitrix\Main\Loader::includeModule('exam31.ticket1');
-
+/*
 for ($i = 0; $i < 100; $i++) {
     $entityObject = SomeElementTable::createObject()
         ->setTitle('Название '.$i)
         ->setDateModify((new \Bitrix\Main\Type\DateTime()))
         ->setActive(1)
         ->setText('Описание '.$i);
+
+    $addResult = $entityObject->save();
+}
+*/
+$dbConnection = \Bitrix\Main\Application::getConnection();
+$entity = \Exam31\Ticket1\SomeElementInfoTable::getEntity();
+$tableName = \Exam31\Ticket1\SomeElementInfoTable::getTableName();
+if (!$dbConnection->isTableExists($tableName))
+{
+    $entity->createDbTable();
+}
+
+for ($i = 1; $i < 20; $i++) {
+    $entityObject = \Exam31\Ticket1\SomeElementInfoTable::createObject()
+        ->setTitle('инфо '.$i)
+        //->setDateModify((new \Bitrix\Main\Type\DateTime()))
+       // ->setActive(1)
+            ->setId($i)
+            ->setElementId(rand(196, 200))
+        ->setTitle('Описание '.$i);
 
     $addResult = $entityObject->save();
 }

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чат с поддержкой</title>
+    <style>
+            div.bx-livechat-head-wrap {display:none;}
+            div.bx-livechat-wrapper {top: 50px;right: 0;left: 0;bottom: 0;width: 100%!important; height: 100%!important;z-index:1!important}
+            div.b24-widget-button-wrapper {display:none}
+            div.bx-livechat-wrapper {top:0;}
+            div.loader {
+                width: 100%;
+                height: 100%;
+                display: absolute;
+                background: blue;
+            }
+    </style>
+</head>
+<body>
+        <div>
+            <script>
+            (function(w,d,u){
+                    var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/60000|0);
+                    var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);
+            })(window,document,'https://upload-portal.storage.yandexcloud.net/crm/site_button/loader_5_yz7pk4.js');
+            
+            window.addEventListener('onBitrixLiveChat', (event) =>
+                    {
+                        var widget = event.detail.widget;
+                        // widget.setUserRegisterData({
+                        //     'hash': '12',
+                        //     'name': "34"
+                        // });
+                        // widget.setCustomData("567");
+                        widget.open();
+                        document.getElementsByClassName('bx-livechat-wrapper')[0].style.zIndex = "1";
+            });
+            </script>
+        </div>
+</body>
+</html> 

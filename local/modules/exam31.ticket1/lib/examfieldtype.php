@@ -1,5 +1,5 @@
 <?php
-namespace Exam31\Ticket;
+namespace Exam31\Ticket1;
 
 use Bitrix\Main\UserField\Types\BaseType;
 use Bitrix\Main\Localization\Loc;
@@ -7,7 +7,7 @@ use Bitrix\Main\Localization\Loc;
 class ExamFieldType extends BaseType
 {
 	public const USER_TYPE_ID = 'examfieldtype';
-	public const RENDER_COMPONENT = 'exam31.ticket:examfieldtype';
+	public const RENDER_COMPONENT = 'exam31.ticket1:examfieldtype';
 
 	protected static function getDescription(): array
 	{
@@ -26,6 +26,8 @@ class ExamFieldType extends BaseType
 	{
 		return [
 			'FORMAT' => $userField['SETTINGS']['FORMAT'] ?: Loc::getMessage('EXAM31_TICKET_FIELDTYPE_UF_DEFAULT_TEMPLATE_VALUE'),
-		];
+            'LINK' => $userField['SETTINGS']['LINK'] ?: Loc::getMessage('EXAM31_TICKET_FIELDTYPE_UF_DEFAULT_TEMPLATE_VALUE_LINK'),
+
+        ];
 	}
 }

@@ -15,6 +15,7 @@ defined('B_PROLOG_INCLUDED') || die;
  */
 Extension::load('ui.dialogs.messagebox');
 Extension::load('ui.notification');
+
 $APPLICATION->SetTitle(Loc::getMessage('INVESTMENT_PROJECT_LIST_PAGE_TITLE'));
 
 foreach ($arResult['toolbar']['buttons'] as $button) {
@@ -35,10 +36,13 @@ $jsonData = Json::encode([
 ]);
 ?>
 <script>
-    BX.ready(() => {
-        const data = <?= $jsonData; ?>;
+    (function () {
 
-        BX.message(data.messages);
-        BX.Academy.Element.Grid.Manager.initialize(data.gridManager);
-    })
+        gridId = <?= $arResult['grid']['GRID_ID']?>;
+        const grid = BX.Main.gridManager.getInstanceById(gridId);
+        if (!grid) {
+            throw `Grid with id ${gridId} not found`;
+        }
+
+    })();
 </script>

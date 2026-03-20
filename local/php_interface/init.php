@@ -76,4 +76,4 @@ $eventManager->addEventHandlerCompatible(
 );
 
 
-Loader::includeModule('local.ex31');
+//Loader::includeModule('exam31.ticket1');

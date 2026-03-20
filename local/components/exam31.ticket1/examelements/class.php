@@ -46,6 +46,7 @@ class SomeElementsComponent extends CBitrixComponent
 			'FOLDER' => $this->arParams['SEF_FOLDER'],
 			'LIST_PAGE_URL' => $this->arParams['SEF_FOLDER'] . $urlTemplates['list'],
 			'DETAIL_PAGE_URL' => $this->arParams['SEF_FOLDER'] . $urlTemplates['detail'],
+            'INFO_PAGE_URL' => $this->arParams['SEF_FOLDER'] . $urlTemplates['info'],
 			'VARIABLES' => $variables,
 		];
 

@@ -23,5 +23,21 @@ $additionalParameters = $arResult['additionalParameters'];
         />
     </td>
 </tr>
+<tr>
+    <td>
+        <div id="currency-link-setting">
+            <span><?=GetMessage('EXAM31_TICKET_FIELDTYPE_UF_VALUE_LINK')?></span>
+        </div>
+    </td>
+    <td>
+        <input
+                type="text"
+                name="<?= $additionalParameters['NAME']; ?>[LINK]"
+                size="50"
+                maxlength="255"
+                value="<?= $arResult['VALUES']['LINK']; ?>"
+        />
+    </td>
+</tr>
 
 
